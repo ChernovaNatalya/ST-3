@@ -45,10 +45,11 @@ TEST_F(TimedDoorTest, DoorIsOpen) {
     door->unlock();
     EXPECT_TRUE(door->isDoorOpened());
 }
+
 TEST_F(TimedDoorTest, DoorIsClose) {
-    door->lock();
     EXPECT_FALSE(door->isDoorOpened());
 }
+
 TEST_F(TimedDoorTest, DoorOpensAndCloses) {
     EXPECT_FALSE(door->isDoorOpened());
     door->unlock();
@@ -56,14 +57,16 @@ TEST_F(TimedDoorTest, DoorOpensAndCloses) {
     door->lock();
     EXPECT_FALSE(door->isDoorOpened());
 }
+
 TEST_F(TimedDoorTest, DoorIsAlreadyOpen) {
     door->unlock();
     EXPECT_THROW(door->unlock(), std::logic_error);
 }
+
 TEST_F(TimedDoorTest, DoorIsAlreadyClose) {
-    door->lock();
     EXPECT_THROW(door->lock(), std::logic_error);
 }
+
 TEST_F(TimedDoorTest, DoorUnlocksAndLoksFewTimes) {
     for (int i = 0; i < 5; i++) {
         door->unlock();
@@ -72,6 +75,7 @@ TEST_F(TimedDoorTest, DoorUnlocksAndLoksFewTimes) {
         EXPECT_FALSE(door->isDoorOpened());
     }
 }
+
 TEST_F(TimedDoorTest, DoorStateThrowOnUnlocked) {
     door->unlock();
     EXPECT_THROW(door->throwState(), std::runtime_error);
@@ -80,10 +84,18 @@ TEST_F(TimedDoorTest, DoorStateThrowOnUnlocked) {
 TEST_F(TimedDoorTest, DoorStateThrowOnLocked) {
     EXPECT_THROW(door->throwState(), std::runtime_error);
 }
-TEST_F(TimedDoorTest, testing_lock_door_after_unlock_timeout) {
+
+TEST_F(TimedDoorTest, DoorNoThrowTimeout) {
     std::this_thread::sleep_for(std::chrono::seconds(door->getTimeOut() + 1));
     EXPECT_NO_THROW(door->throwState());
 }
+
+TEST_F(TimedDoorTest, DoorThrowTimeout) {
+    door->unlock();
+    std::this_thread::sleep_for(std::chrono::seconds(door->getTimeOut()));
+    EXPECT_THROW(door->throwState(), std::runtime_error);
+}
+
 TEST_F(TimedDoorTest, DoorTimeoutWhenOpened) {
     door->unlock();
     DoorTimerAdapter adapter(*door);

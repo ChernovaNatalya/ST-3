@@ -3,25 +3,27 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include <cstdint>
+#include <chrono> // NOLINT [build/c++11]
+#include <thread> // NOLINT [build/c++11]
 #include "TimedDoor.h"
 
 using ::testing::_;
 using ::testing::Invoke;
 
 class MockTimerClient : public TimerClient {
-public:
+ public:
     MOCK_METHOD(void, Timeout, (), (override));
 };
 
 class MockDoor : public Door {
-public:
+ public:
     MOCK_METHOD(void, lock, (), (override));
     MOCK_METHOD(void, unlock, (), (override));
     MOCK_METHOD(bool, isDoorOpened, (), (override));
 };
 
 class TimedDoorTest : public ::testing::Test {
-protected:
+ protected:
     TimedDoor* door;
     DoorTimerAdapter* adapter;
     Timer* timer;

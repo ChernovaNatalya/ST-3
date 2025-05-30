@@ -28,9 +28,7 @@ int  TimedDoor::getTimeOut() const {
     return iTimeout;
 }
 void TimedDoor::throwState() {
-    if (isOpened) {
-        throw std::runtime_error("Time is up!");
-    }
+    throw std::runtime_error("Time is up!");
 }
 
 void DoorTimerAdapter::Timeout() {

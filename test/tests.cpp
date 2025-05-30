@@ -82,7 +82,7 @@ TEST_F(TimedDoorTest, DoorStateThrowOnUnlocked) {
 }
 
 TEST_F(TimedDoorTest, DoorStateNoThrowOnLocked) {
-    EXPECT_NO_THROW(door->throwState(), std::runtime_error);
+    EXPECT_NO_THROW(door->throwState());
 }
 
 TEST_F(TimedDoorTest, DoorNoThrowTimeout) {
